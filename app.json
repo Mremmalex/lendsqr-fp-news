@@ -1,0 +1,5 @@
+{
+  "name": "lendsqr_news",
+  "displayName": "lendsqr_news",
+  "plugins": ["@react-native-google-signin/google-signin"]
+}
