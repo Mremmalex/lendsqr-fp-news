@@ -1,31 +1,38 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {
   GoogleSignin,
-  GoogleSigninButton,
+  statusCodes,
 } from '@react-native-google-signin/google-signin';
 import AppSafeArea from '../../components/shared/ui/AppSafeArea';
-// import FlatButton from '../../components/shared/ui/FlatButton';
+import FlatButton from '../../components/shared/ui/FlatButton';
 import TextFormInput from '../../components/shared/ui/TextFormInput';
-
-GoogleSignin.configure({
-  webClientId:
-    '700454714565-5hpl4cikjnvv7cdqvve45kq2i7n9htti.apps.googleusercontent.com',
-  // '468633750146-6pdp4d9h1qn3j5j65nmtlhtumcfdsi5v.apps.googleusercontent.com',
-  offlineAccess: true,
-});
 
 const RegisterScreen = () => {
   async function signInWithGoogle() {
-    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    try {
+      GoogleSignin.configure({
+        webClientId:
+          '898351724272-i38amlcvsgkp46d4mgre5ogdcumft41v.apps.googleusercontent.com',
+        offlineAccess: true,
+      });
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
 
-    const {idToken, user} = await GoogleSignin.signIn();
-    console.log(user);
+      const {idToken} = await GoogleSignin.signIn();
 
-    const googleCred = auth.GoogleAuthProvider.credential(idToken);
+      const googleCred = auth.GoogleAuthProvider.credential(idToken);
 
-    return auth().signInWithCredential(googleCred);
+      return auth().signInWithCredential(googleCred);
+    } catch (error: any) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        Alert.alert('sign in error', 'sign in was canceled by user');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        Alert.alert('sign in error', 'sign in already in progress');
+      } else {
+        Alert.alert('sign in error', 'internal server error');
+      }
+    }
   }
 
   return (
@@ -40,17 +47,9 @@ const RegisterScreen = () => {
             <TextFormInput placeholder="Phone Number" />
             <TextFormInput placeholder="Email Address" />
           </View>
-          <GoogleSigninButton
-            style={styles.button}
-            onPress={() =>
-              signInWithGoogle()
-                .then(() => console.log('logged in'))
-                .catch(e => console.log(e))
-            }
-          />
-          {/* <FlatButton style={styles.button} onPress={signInWithGoogle}> */}
-          {/* Sign In With Google
-          </FlatButton> */}
+          <FlatButton style={styles.button} onPress={signInWithGoogle}>
+            Sign In With Google
+          </FlatButton>
         </View>
       </View>
     </AppSafeArea>
