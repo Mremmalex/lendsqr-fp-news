@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {
   GoogleSignin,
   statusCodes,
@@ -10,6 +11,11 @@ import FlatButton from '../../components/shared/ui/FlatButton';
 import TextFormInput from '../../components/shared/ui/TextFormInput';
 
 const RegisterScreen = () => {
+  const [stepOne, setStepOne] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [fullName, setFullName] = useState<string>('');
+
   async function signInWithGoogle() {
     try {
       GoogleSignin.configure({
@@ -35,21 +41,71 @@ const RegisterScreen = () => {
     }
   }
 
+  function continueRegistrationHandler() {
+    if (email === '' || phoneNumber === '' || fullName === ' ') {
+      Alert.alert('registration error', 'please fill in the registration form');
+      return;
+    }
+    firestore()
+      .collection('Users')
+      .add({
+        fullname: fullName,
+        phonenumber: phoneNumber,
+        email: email,
+      })
+      .then(() => {
+        setStepOne(true);
+      })
+      .catch(error => console.log(error));
+  }
+  function emailHandler(val: string) {
+    setEmail(val);
+  }
+  function fullNameHandler(val: string) {
+    setFullName(val);
+  }
+  function phoneNumberHandler(val: string) {
+    setPhoneNumber(val);
+  }
+
   return (
     <AppSafeArea>
       <View style={styles.container}>
         <View style={styles.card}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Get Registered</Text>
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextFormInput placeholder="Full Name" />
-            <TextFormInput placeholder="Phone Number" />
-            <TextFormInput placeholder="Email Address" />
-          </View>
-          <FlatButton style={styles.button} onPress={signInWithGoogle}>
-            Sign In With Google
-          </FlatButton>
+          {stepOne ? (
+            <View style={styles.stepTwo}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>Finish Registration</Text>
+              </View>
+              <FlatButton style={styles.button} onPress={signInWithGoogle}>
+                Sign In With Google
+              </FlatButton>
+            </View>
+          ) : (
+            <View>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>Get Registered</Text>
+              </View>
+              <View style={styles.textInputContainer}>
+                <TextFormInput
+                  placeholder="Full Name"
+                  onChangeText={fullNameHandler}
+                />
+                <TextFormInput
+                  keyboardType="number-pad"
+                  placeholder="Phone Number"
+                  onChangeText={phoneNumberHandler}
+                />
+                <TextFormInput
+                  placeholder="Email Address"
+                  onChangeText={emailHandler}
+                />
+              </View>
+              <FlatButton onPress={continueRegistrationHandler}>
+                Continue
+              </FlatButton>
+            </View>
+          )}
         </View>
       </View>
     </AppSafeArea>
@@ -77,9 +133,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'center',
   },
-  button: {
-    marginHorizontal: 20,
-  },
+
   titleContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -87,5 +141,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 23,
     fontWeight: 'bold',
+  },
+  button: {
+    marginHorizontal: 20,
+    marginVertical: 30,
+  },
+  stepTwo: {
+    justifyContent: 'space-between',
   },
 });

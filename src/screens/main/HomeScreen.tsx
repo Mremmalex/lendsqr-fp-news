@@ -28,7 +28,7 @@ const HomeScreen = (): JSX.Element => {
   }
 
   function throwRuntimeErrorhandler() {
-    throw new Error('Runtime Error');
+    throw new Error('Invalid Action');
   }
 
   return (

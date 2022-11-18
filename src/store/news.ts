@@ -6,12 +6,14 @@ type InitState = {
   loading: boolean;
   newsData: [];
   headline: [];
+
   error: string;
 };
 
 const initialState: InitState = {
   newsData: [],
   headline: [],
+
   loading: false,
   error: '',
 };
