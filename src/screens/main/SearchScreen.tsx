@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import AppSafeArea from '../../components/shared/ui/AppSafeArea';
 import TextFormInput from '../../components/shared/ui/TextFormInput';
 import {useAppDispatch, useAppSelector} from '../../store/hook';
-import ListTile from '../../components/latest/ListTile';
+import ListTile from '../../components/Card/ListTile';
 import NewsData from '../../types/newsData';
 import {searchForNews} from '../../store/ApiHooks/newsHook';
 

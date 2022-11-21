@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import remoteConfig from '@react-native-firebase/remote-config';
+import messaging from '@react-native-firebase/messaging';
 import {firebase as firebaseAnalytics} from '@react-native-firebase/analytics';
 import {firebase as fireBasePerf} from '@react-native-firebase/perf';
 import {useAppDispatch, useAppSelector} from '../store/hook';
@@ -41,6 +42,23 @@ export default function RootNav() {
         console.log('config defaults set');
       });
     enableAnalytics();
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+    });
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(remoteMessage.notification);
+        }
+      });
+
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log(remoteMessage.notification);
+    });
   }, []);
   return (
     <NavigationContainer>

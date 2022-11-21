@@ -7,7 +7,7 @@ import TextButton from '../../components/shared/ui/TextButton';
 import Colors from '../../constants/color';
 import NewsData from '../../types/newsData';
 import HeadlineCard from '../../components/headline/HeadlineCard';
-import ListTile from '../../components/latest/ListTile';
+import ListTile from '../../components/Card/ListTile';
 
 const HomeScreen = (): JSX.Element => {
   const headlineNews: Array<NewsData> = useAppSelector(

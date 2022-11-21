@@ -17,20 +17,6 @@ export default function App() {
   }
   useEffect(() => {
     requestUserPermission();
-
-    // messaging().onNotificationOpenedApp(remoteMessage => {
-    //   console.log(
-    //     'Notification caused app to open from background state:',
-    //     remoteMessage.notification,
-    //   );
-    // });
-    // messaging()
-    //   .getInitialNotification()
-    //   .then(remoteMessage => {
-    //     if (remoteMessage) {
-    //       console.log(remoteMessage.notification);
-    //     }
-    //   });
   }, []);
   return (
     <>

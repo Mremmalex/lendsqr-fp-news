@@ -14,6 +14,8 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types/navigationTypes';
 
 const LoginScreen = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [stepOne, setStepOne] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const navigator =
@@ -48,6 +50,7 @@ const LoginScreen = () => {
       Alert.alert('registration error', 'please fill in the registration form');
       return;
     }
+    setIsLoading(true);
     firestore()
       .collection('Users')
       .where('email', '==', email)
@@ -61,6 +64,7 @@ const LoginScreen = () => {
         }
       })
       .catch(error => console.log(error));
+    setIsLoading(false);
   }
   function emailHandler(val: string) {
     setEmail(val);
@@ -90,7 +94,7 @@ const LoginScreen = () => {
                 />
               </View>
               <FlatButton onPress={continueRegistrationHandler}>
-                Continue
+                {isLoading ? 'Processing...' : '  Continue'}
               </FlatButton>
             </View>
           )}

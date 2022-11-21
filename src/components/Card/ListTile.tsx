@@ -37,9 +37,6 @@ const ListTile: React.FC<ListTileProps> = ({item}) => {
               {item.title}
             </Text>
           </View>
-          <View style={styles.latestCardDetails}>
-            <Text style={styles.rankText}>Rank {item.rank.toString()}</Text>
-          </View>
         </View>
       </View>
     </Pressable>

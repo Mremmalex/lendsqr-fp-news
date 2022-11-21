@@ -17,6 +17,7 @@ const RegisterScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [fullName, setFullName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function signInWithGoogle() {
     try {
@@ -54,6 +55,7 @@ const RegisterScreen = () => {
       Alert.alert('registration error', 'please fill in the registration form');
       return;
     }
+    setLoading(true);
     firestore()
       .collection('Users')
       .add({
@@ -64,8 +66,10 @@ const RegisterScreen = () => {
       })
       .then(() => {
         setStepOne(true);
+        setLoading(false);
       })
       .catch(error => console.log(error));
+    setLoading(false);
   }
   function emailHandler(val: string) {
     setEmail(val);
@@ -114,7 +118,7 @@ const RegisterScreen = () => {
                 />
               </View>
               <FlatButton onPress={continueRegistrationHandler}>
-                Continue
+                {loading ? 'Processing...' : 'Continue'}
               </FlatButton>
             </View>
           )}
