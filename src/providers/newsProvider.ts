@@ -1,8 +1,16 @@
 import {AxiosResponse} from './../../node_modules/axios/index.d';
 import axios from 'axios';
+import perf from '@react-native-firebase/perf';
 
 type ConfigParam = {
   q?: string;
+};
+
+type AxiosConFig = {
+  method: string;
+  url: string;
+  params: {};
+  headers: {};
 };
 
 export function ConfigApiRequest({q}: ConfigParam) {
@@ -25,13 +33,21 @@ export function ConfigApiRequest({q}: ConfigParam) {
   return options;
 }
 
-export async function getPopularNews() {
-  try {
-    const options = ConfigApiRequest({q: 'Elon Musk'});
-    const response: AxiosResponse = await axios.request(options);
-    const data = await response.data;
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+export async function AxiosGetRequest(config: AxiosConFig) {
+  // try {
+  const metric = perf().newHttpMetric(config.url, 'GET');
+
+  metric.putAttribute('user_role', 'admin');
+  await metric.start();
+
+  const response: AxiosResponse = await axios.request(config);
+  metric.setHttpResponseCode(response.status);
+  metric.setResponseContentType('application/json');
+
+  await metric.stop();
+  const data = await response.data;
+  return data;
+  // } catch (error: any) {
+  //   throw error;
+  // }
 }

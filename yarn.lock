@@ -1398,6 +1398,18 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-16.4.5.tgz#05ee0e3dc46785129c3d6377e41136070764dd08"
   integrity sha512-g30b+bjxzjrGYjhG5e4ytOXNgr7sOlpxrAnzbVtw4MOgSa+UbMV/0Z7pICMOvvbVn8Jv99rKPRTxSOvAqSEKAA==
 
+"@react-native-firebase/messaging@^16.4.6":
+  version "16.4.6"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-16.4.6.tgz#dd1a1eccff39eac6cd201792c388fc11afd6b4bf"
+  integrity sha512-5XHc++UxK+wEYifyovemr+K5aUpcDuqzGPAqc2tqrVxtsELmGi9pCOFbCuFhkg5DzNGToNT9Z79DTd+XLCVemA==
+
+"@react-native-firebase/perf@^16.4.5":
+  version "16.4.5"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/perf/-/perf-16.4.5.tgz#ad4c18f56e9ee9e56ed6c5aba5f7de0a19926b6a"
+  integrity sha512-EL1l3UKi5C6A/lqHixRaVIncX+1iRSB2fY9FkimxdLX2M7QiM63rJXZWyg40Dh8X/od/lL4n4j9tokBHEfqmdQ==
+  dependencies:
+    "@expo/config-plugins" "^5.0.4"
+
 "@react-native-firebase/remote-config@^16.4.5":
   version "16.4.5"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/remote-config/-/remote-config-16.4.5.tgz#ab1900a0ccafff2a90d4c0cc1b50f96f80975f47"

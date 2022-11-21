@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 import {
   GoogleSignin,
   statusCodes,
@@ -12,9 +13,10 @@ import TextFormInput from '../../components/shared/ui/TextFormInput';
 
 const RegisterScreen = () => {
   const [stepOne, setStepOne] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>('');
+  const [appToken, setAppToken] = useState('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [fullName, setFullName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
 
   async function signInWithGoogle() {
     try {
@@ -41,6 +43,12 @@ const RegisterScreen = () => {
     }
   }
 
+  async function activateNotificationHandle() {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    setAppToken(token);
+  }
+
   function continueRegistrationHandler() {
     if (email === '' || phoneNumber === '' || fullName === ' ') {
       Alert.alert('registration error', 'please fill in the registration form');
@@ -52,6 +60,7 @@ const RegisterScreen = () => {
         fullname: fullName,
         phonenumber: phoneNumber,
         email: email,
+        token: appToken,
       })
       .then(() => {
         setStepOne(true);
@@ -67,6 +76,9 @@ const RegisterScreen = () => {
   function phoneNumberHandler(val: string) {
     setPhoneNumber(val);
   }
+  useEffect(() => {
+    activateNotificationHandle();
+  }, []);
 
   return (
     <AppSafeArea>

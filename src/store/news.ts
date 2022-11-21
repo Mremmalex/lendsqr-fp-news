@@ -13,7 +13,6 @@ type InitState = {
 const initialState: InitState = {
   newsData: [],
   headline: [],
-
   loading: false,
   error: '',
 };

@@ -1,3 +1,4 @@
-export type NavigationProp = {
-	NewsDetails: { newsId: string };
+export type RootStackParamList = {
+  NewsDetails: {newsId: string};
+  Register: undefined;
 };

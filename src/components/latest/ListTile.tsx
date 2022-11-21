@@ -10,14 +10,15 @@ import React from 'react';
 import NewsData from '../../types/newsData';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {NavigationProp} from '../../types/navigationTypes';
+import {RootStackParamList} from '../../types/navigationTypes';
 
 type ListTileProps = {
   item: NewsData;
 };
 
 const ListTile: React.FC<ListTileProps> = ({item}) => {
-  const Navigation = useNavigation<NativeStackNavigationProp<NavigationProp>>();
+  const Navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   function navigateHandler() {
     Navigation.navigate('NewsDetails', {
       newsId: item._id,
