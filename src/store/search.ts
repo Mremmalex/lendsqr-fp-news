@@ -30,7 +30,6 @@ const SearchSlice = createSlice({
 
     builder.addCase(searchForNews.fulfilled, (state, action) => {
       state.loading = false;
-
       state.searchedNews = action.payload;
     });
   },
